@@ -26,9 +26,9 @@ for root, dirs, files in os.walk("./"):
 			total_violations = 0
 			print('Analyzing report '+name)
 			for file_name in violations.findall('file'):     #iter files
-				with open(output_log_path, "a") as f:
-					f.write("\n====\nFile - "+str(file_name.get('name'))+":\n")
-					f.close()
+				#with open(output_log_path, "a") as f:
+				#	f.write("\n====\nFile - "+str(file_name.get('name'))+":\n")
+				#	f.close()
 				rules_in_file = {}
 				files_analized = files_analized + 1
 				for violation in file_name.findall('violation'): #iter violations in a file
@@ -47,8 +47,9 @@ for root, dirs, files in os.walk("./"):
 						rules_in_file[str(violation.find('rule').get('id'))] = 1	
 				for key, value in rules_in_file.items():
 					with open(output_log_path, "a") as f:
-						f.write("\t--\n\tRule "+key+' - '+str(id_rules[key])+": "+str(value)+"\n")
-						f.write("\tSeverity: "+str(id_severity[key])+"\n")
+						f.write(str(file_name.get('name'))+"\t"+key+"\t"+str(value)+"\t"+str(id_severity[key])+"\n")
+						#f.write("\t--\n\tRule "+key+' - '+str(id_rules[key])+": "+str(value)+"\n")
+						#f.write("\tSeverity: "+str(id_severity[key])+"\n")
 						f.close()
 			with open(output_log_path, "a") as f:
 					f.write("\n***********Project Overview***********")
@@ -58,8 +59,8 @@ for root, dirs, files in os.walk("./"):
 			for key, value in project_rules_id_quantity.items():
 				with open(output_log_path, "a") as f:
 					if len(key) < 2:
-						f.write("\nRule: 0"+key+"\t-\t"+str(value)+"\t|\tSeverity:"+id_severity[key]+"\t"+id_rules[key])
+						f.write("\n"+key+"\t"+str(value)+"\t"+id_severity[key])
 					else:
-						f.write("\nRule: "+key+"\t-\t"+str(value)+"\t|\tSeverity:"+id_severity[key]+"\t"+id_rules[key])
+						f.write("\n"+key+"\t"+str(value)+"\t"+id_severity[key])
 					f.close()
 print('Done!')
